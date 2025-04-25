@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
 const { Pool } = require('pg');
 const path = require('path');
-
 const app = express();
 
 
@@ -12,18 +11,9 @@ app.get('/test-css', (req, res) => {
   res.sendFile(path.join(__dirname, 'styles', 'login.css'));
 });
 // Configuración CORS
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [
-      'https://tudominio-frontend.com',
-      'https://tufrontend-en-render.onrender.com'
-    ]
-  : [
-      'http://localhost:3000',
-      'http://127.0.0.1:5500'
-    ];
+
 
 app.use(cors({
-  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -507,7 +497,7 @@ app.get('/contratos/:token', async (req, res) => {
 
 
 // Iniciamos el servidor en el puerto 3000
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000
 console.log("👀 Llegando al punto de arrancar el servidor...");
 
 app.listen(port, () => {
