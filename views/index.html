@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contrato de Arrendamiento</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/style.css">
+
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Generador de Contrato de Arrendamiento</h2>
+
+    <!-- Formulario para agregar o editar conductor -->
+    <div class="card shadow-sm p-4 mb-4">
+      <h5 class="mb-3">Formulario Conductor</h5>
+      <form id="formAgregarConductor">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="nombreConductor" class="form-label">Nombre del Conductor</label>
+            <input type="text" class="form-control" id="nombreConductor" required />
+          </div>
+          <div class="col-md-6">
+            <label for="cedulaConductor" class="form-label">Cédula</label>
+            <input type="text" class="form-control" id="cedulaConductor" required />
+          </div>
+          <div class="col-md-6">
+            <label for="marcaVehiculoConductor" class="form-label">Marca del Vehículo</label>
+            <input type="text" class="form-control" id="marcaVehiculoConductor" required />
+          </div>
+          <div class="col-md-6">
+            <label for="modeloVehiculoConductor" class="form-label">Modelo del Vehículo</label>
+            <input type="text" class="form-control" id="modeloVehiculoConductor" required />
+          </div>
+          <div class="col-md-6">
+            <label for="colorVehiculoConductor" class="form-label">Color del Vehículo</label>
+            <input type="text" class="form-control" id="colorVehiculoConductor" required />
+          </div>
+          <div class="col-md-6">
+            <label for="placaVehiculoConductor" class="form-label">Placa del Vehículo</label>
+            <input type="text" class="form-control" id="placaVehiculoConductor" required />
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-4 gap-2">
+          <button type="submit" class="btn btn-primary" id="btnAgregarConductor">Agregar Conductor</button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-danger d-none" id="btnEliminarConductor">Eliminar</button>
+            <button type="button" class="btn btn-warning d-none" id="btnActualizarConductor">Actualizar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Selección de conductor -->
+    <div class="card shadow-sm p-4 mb-4">
+      <label for="conductorSelect" class="form-label">Seleccionar Conductor</label>
+      <select id="conductorSelect" class="form-select" required>
+        <option value="">-- Selecciona --</option>
+      </select>
+    </div>
+
+    <!-- Información del vehículo -->
+    <div class="card shadow-sm p-4 mb-4">
+      <h5>Datos del Vehículo</h5>
+      <p><strong>Marca:</strong> <span id="marca">-</span></p>
+      <p><strong>Modelo:</strong> <span id="modelo">-</span></p>
+      <p><strong>Color:</strong> <span id="color">-</span></p>
+      <p><strong>Placa:</strong> <span id="placa">-</span></p>
+    </div>
+
+    <!-- Formulario del cliente -->
+    <div class="card shadow-sm p-4 mb-5">
+      <h5 class="mb-3">Datos del Cliente</h5>
+      <form id="formularioContrato">
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" id="nombreCliente" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cédula o Pasaporte</label>
+          <input type="text" id="cedulaCliente" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Tipo de Contrato</label>
+          <select id="tipoContrato" class="form-select" required>
+            <option value="">Seleccione</option>
+            <option value="horas">Por Horas</option>
+            <option value="dias">Por Días</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cantidad</label>
+          <input type="number" id="cantidad" class="form-control" min="1" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ciudad</label>
+          <input type="text" id="ciudadFirma" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Fecha</label>
+          <input type="date" id="fechaFirma" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success w-100" id="submitBtn">Generar Contrato</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="/scripts/script.js"></script>
+</body>
+</html>

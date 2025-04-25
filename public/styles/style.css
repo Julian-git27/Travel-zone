@@ -1,0 +1,185 @@
+/* Fondo general con degradado suave */
+body {
+  background: linear-gradient(135deg, #1b769a, #8e24aa);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor principal centrado */
+.container {
+  background-color: white;
+  border-radius: 30px;
+  padding: 50px 60px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animación para hacer que el contenedor se "mueva" un poco al cargar */
+.container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Título principal */
+h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #5e35b1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Secciones internas */
+.card {
+  border: none;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado de sección dentro de las tarjetas */
+.card h5 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #512da8;
+  font-weight: 600;
+}
+
+/* Etiquetas de formulario */
+.form-label {
+  font-weight: 500;
+  color: #5e35b1;
+  margin-bottom: 10px;
+}
+
+/* Campos de entrada */
+.form-control, .form-select {
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+/* Cambio de color al hacer focus en los campos */
+.form-control:focus, .form-select:focus {
+  border-color: #8e24aa;
+  box-shadow: 0 0 10px rgba(142, 36, 170, 0.3);
+  outline: none;
+}
+
+/* Botón principal */
+button {
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+}
+
+/* Efecto hover para el botón */
+button:hover {
+  background-color: #6a1b9a;
+  transform: translateY(-2px);
+}
+
+/* Botón de submit con color distintivo */
+#submitBtn {
+  background-color: #8e24aa;
+  color: white;
+  border: none;
+}
+
+#submitBtn:hover {
+  background-color: #6a1b9a;
+}
+
+/* Selección de conductor */
+.form-select {
+  appearance: none;
+  padding-right: 30px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"><path d="M1.5 4a.5.5 0 0 1 .707-.707L8 8.793l5.793-5.5A.5.5 0 0 1 15.5 4L8 10l-7.5-6z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1rem;
+}
+
+/* Logo */
+.logo-agencia {
+  display: block;
+  margin: 0 auto 30px;
+  width: 120px;
+}
+
+/* Sección de información del vehículo */
+#marca, #modelo, #color, #placa {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Resultado del contrato */
+#resultado-contrato {
+  border-radius: 15px;
+  border: 1px solid #ddd;
+  background-color: #fce4ec;
+  padding: 20px;
+  font-size: 1rem;
+  color: #7b1fa2;
+}
+
+/* Mejoras en los botones de eliminar y actualizar */
+.d-flex button {
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+.d-flex .btn-danger {
+  background-color: #d32f2f;
+}
+
+.d-flex .btn-danger:hover {
+  background-color: #b71c1c;
+}
+
+.d-flex .btn-warning {
+  background-color: #ffb300;
+}
+
+.d-flex .btn-warning:hover {
+  background-color: #ffa000;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .container {
+    margin-top: 20px;
+    padding: 30px 25px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+}

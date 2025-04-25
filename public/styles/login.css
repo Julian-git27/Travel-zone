@@ -1,0 +1,94 @@
+
+.login-body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(to right, #36d1dc, #5b86e5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-wrapper {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+  }
+  /* Fondo con gradiente */
+body {
+    background: linear-gradient(to right, #36d1dc, #5b86e5);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  /* Contenedor del formulario */
+  .card {
+    border: none;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+  }
+  
+  /* Título */
+  .card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Campos del formulario */
+  .form-label {
+    font-weight: 500;
+    color: #444;
+  }
+  
+  .form-control, .form-select {
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+  
+  /* Botón */
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px;
+    transition: 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Logo */
+  .logo-container {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .logo-container img {
+    max-width: 120px;
+    height: auto;
+  }
+  
+  /* Error message */
+  #error-message {
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive */
+  @media (max-width: 576px) {
+    .card {
+      padding: 1.5rem;
+    }
+  }
+  
