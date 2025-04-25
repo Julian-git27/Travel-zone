@@ -85,13 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
       // Hacer petición al servidor con timeout de 10s
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-      const response = await fetch(`http://localhost:3000${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        signal: controller.signal
-      });
+      const BASE_URL = window.location.hostname.includes('localhost')
+      ? 'https://<TU-NOMBRE-DE-SERVICIO>.onrender.com'
+      : 'http://localhost:3000';
+    
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+      
+    });
+    
+      
 
       clearTimeout(timeoutId);
 
