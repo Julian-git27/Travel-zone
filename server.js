@@ -113,7 +113,7 @@ app.get('/confirmacion', (req, res) => {
 
 // Configuración de la conexión a PostgreSQL
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgres://postgres:1234@localhost:5432/agencia_viajes', // Usa la URL de la base de datos si está disponible, sino usa la conexión local
+  connectionString: process.env.DATABASE_URL, // Usa la URL de la base de datos si está disponible, sino usa la conexión local
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false, // Habilita SSL solo en producción
 });
 
@@ -127,35 +127,40 @@ app.get('/conductores', async (req, res) => {
     res.status(500).send('Error al obtener los conductores');
   }
 });
-app.post('/login/empleado', async (req, res) => {
+app.post('/login/conductores', async (req, res) => {
   try {
     const { cedula, placa } = req.body;
     
-    const conductor = await Conductor.findOne({
-      where: { cedula, placa },
+    // 1. Validar datos
+    if (!cedula || !placa) {
+      return res.status(400).json({ success: false, message: 'Cédula y placa son requeridos' });
+    }
+    
+    // 2. Buscar empleado en la base de datos
+    const conductor = await Conductor.findOne({ 
+      where: { 
+        cedula: cedula,
+        placa: placa 
+      },
       attributes: ['id', 'nombre', 'cedula', 'marca', 'modelo', 'color', 'placa']
     });
-
+    
     if (!conductor) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Conductor no encontrado' 
-      });
+      return res.status(404).json({ success: false, message: 'Empleado no encontrado' });
     }
-
-    res.json({
+    
+    // 3. Responder con éxito
+    res.json({ 
       success: true,
-      user: {
-        ...conductor.dataValues,
-        tipo: 'empleado' // Mantienes la misma estructura que espera el frontend
-      }
+      user: conductor 
     });
-
+    
   } catch (error) {
-    console.error('Error en login conductor:', error);
+    console.error('Error en login empleado:', error);
     res.status(500).json({ 
-      success: false, 
-      message: 'Error en el servidor' 
+      success: false,
+      message: 'Error interno del servidor',
+      error: process.env.NODE_ENV === 'development' ? error.message : null
     });
   }
 });
@@ -320,37 +325,52 @@ app.post('/login/jefe', async (req, res) => {
 app.post('/login/empleado', async (req, res) => {
   try {
     const { cedula, placa } = req.body;
+    
+    // Asegúrate de seleccionar TODOS los campos necesarios
+    const result = await pool.query(
+      `SELECT 
+        id, 
+        nombre, 
+        cedula, 
+        marca, 
+        modelo, 
+        color, 
+        placa 
+       FROM conductores 
+       WHERE cedula = $1 AND placa = $2`, 
+      [cedula, placa]
+    );
 
-    // Usa el modelo correcto (Conductor en lugar de Empleado)
-    const conductor = await Conductor.findOne({
-      where: { cedula, placa },
-      attributes: ['id', 'nombre', 'cedula', 'marca', 'modelo', 'color', 'placa']
-    });
-
-    if (!conductor) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Conductor no encontrado con esas credenciales' 
+    if (result.rows.length === 0) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Credenciales incorrectas' 
       });
     }
-
-    // Respuesta compatible con el frontend
+    
+    // Devuelve todos los campos necesarios
     res.json({
       success: true,
       user: {
-        ...conductor.dataValues,
-        tipo: 'empleado' // Mantiene la estructura esperada por el front
+        id: result.rows[0].id,
+        nombre: result.rows[0].nombre,
+        cedula: result.rows[0].cedula,
+        marca: result.rows[0].marca,
+        modelo: result.rows[0].modelo,
+        color: result.rows[0].color,
+        placa: result.rows[0].placa
       }
     });
-
-  } catch (error) {
-    console.error('Error en login conductor:', error);
+    
+  } catch (err) {
+    console.error('Error en login empleado:', err);
     res.status(500).json({ 
-      success: false, 
-      message: 'Error en el servidor al buscar conductor' 
+      success: false,
+      message: 'Error del servidor' 
     });
   }
 });
+
 app.post('/contratos', async (req, res) => {
   const {
     nombre_cliente,
@@ -378,32 +398,7 @@ app.post('/contratos', async (req, res) => {
       errors
     });
   }
-  const Conductor = sequelize.define('Conductor', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    nombre: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    cedula: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-      unique: true
-    },
-    placa: {
-      type: DataTypes.STRING(20),
-      allowNull: false
-    },
-    marca: DataTypes.STRING,
-    modelo: DataTypes.STRING,
-    color: DataTypes.STRING
-  }, {
-    tableName: 'conductores', // Esto es clave para usar la tabla existente
-    timestamps: false // Si tu tabla no tiene campos created_at/updated_at
-  });
+
   try {
     const token = uuidv4();
     
