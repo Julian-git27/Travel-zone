@@ -85,16 +85,11 @@ document.addEventListener('DOMContentLoaded', function() {
       // Hacer petición al servidor con timeout de 10s
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-      const BASE_URL = window.location.hostname.includes('localhost')
-      ? 'http://localhost:3000'
-      : 'https://travel-zone.onrender.com';
-    
-      console.log('URL completa:', `${BASE_URL}${endpoint}`); // Añade esto antes del fetch
-      const response = await fetch(`${BASE_URL}${endpoint}`, {
+      const BASE_URL = 'https://travel-zone.onrender.com';
+      const response = await fetch(`${BASE_URL}/login/empleado`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        signal: controller.signal // Añade esto para el timeout
+        body: JSON.stringify({ cedula, placa })
       });
       
       if (response.status === 500) {

@@ -320,52 +320,37 @@ app.post('/login/jefe', async (req, res) => {
 app.post('/login/empleado', async (req, res) => {
   try {
     const { cedula, placa } = req.body;
-    
-    // Asegúrate de seleccionar TODOS los campos necesarios
-    const result = await pool.query(
-      `SELECT 
-        id, 
-        nombre, 
-        cedula, 
-        marca, 
-        modelo, 
-        color, 
-        placa 
-       FROM conductores 
-       WHERE cedula = $1 AND placa = $2`, 
-      [cedula, placa]
-    );
 
-    if (result.rows.length === 0) {
-      return res.status(401).json({ 
-        success: false,
-        message: 'Credenciales incorrectas' 
+    // Usa el modelo correcto (Conductor en lugar de Empleado)
+    const conductor = await Conductor.findOne({
+      where: { cedula, placa },
+      attributes: ['id', 'nombre', 'cedula', 'marca', 'modelo', 'color', 'placa']
+    });
+
+    if (!conductor) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Conductor no encontrado con esas credenciales' 
       });
     }
-    
-    // Devuelve todos los campos necesarios
+
+    // Respuesta compatible con el frontend
     res.json({
       success: true,
       user: {
-        id: result.rows[0].id,
-        nombre: result.rows[0].nombre,
-        cedula: result.rows[0].cedula,
-        marca: result.rows[0].marca,
-        modelo: result.rows[0].modelo,
-        color: result.rows[0].color,
-        placa: result.rows[0].placa
+        ...conductor.dataValues,
+        tipo: 'empleado' // Mantiene la estructura esperada por el front
       }
     });
-    
-  } catch (err) {
-    console.error('Error en login empleado:', err);
+
+  } catch (error) {
+    console.error('Error en login conductor:', error);
     res.status(500).json({ 
-      success: false,
-      message: 'Error del servidor' 
+      success: false, 
+      message: 'Error en el servidor al buscar conductor' 
     });
   }
 });
-
 app.post('/contratos', async (req, res) => {
   const {
     nombre_cliente,
