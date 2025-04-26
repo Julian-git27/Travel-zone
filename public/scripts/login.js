@@ -86,17 +86,18 @@ document.addEventListener('DOMContentLoaded', function() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       const BASE_URL = window.location.hostname.includes('localhost')
-      ? 'https://<TU-NOMBRE-DE-SERVICIO>.onrender.com'
-      : 'http://localhost:3000';
+      ? 'http://localhost:3000'
+      : 'https://travel-zone.onrender.com';
+    
     
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(body)
       
     });
     
-      
+    
 
       clearTimeout(timeoutId);
 

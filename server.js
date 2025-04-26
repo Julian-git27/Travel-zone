@@ -6,6 +6,47 @@ const { Pool } = require('pg');
 const path = require('path');
 const app = express();
 
+// Configuración robusta de variables de entorno
+require('dotenv').config({ path: '.env' });
+
+// Verificación estricta de variables requeridas
+const requiredEnvVars = ['PORT', 'DATABASE_URL'];
+requiredEnvVars.forEach(varName => {
+  if (!process.env[varName]) {
+    console.error(`🛑 ERROR FATAL: Falta la variable de entorno ${varName}`);
+    process.exit(1);
+  }
+});
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://travel-zone.onrender.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origen no permitido por CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200 // Para navegadores antiguos
+};
+
+app.use(cors(corsOptions));
+console.log('✅ Variables de entorno cargadas correctamente');
 
 app.get('/test-css', (req, res) => {
   res.sendFile(path.join(__dirname, 'styles', 'login.css'));
@@ -100,7 +141,11 @@ app.get('/conductores/:id', async (req, res) => {
 
 // Ruta para agregar un nuevo conductor
 app.post('/conductores', async (req, res) => {
-  const { nombre, cedula, marca, modelo, color, placa } = req.body;
+  if (!req.body) {
+    return res.status(400).json({ error: 'Cuerpo de solicitud vacío' });
+  }
+  const data = req.body; // Declaración explícita
+  const { nombre, cedula, marca, modelo, color, placa } = data;
   try {
     const result = await pool.query(
       'INSERT INTO conductores (nombre, cedula, marca, modelo, color, placa) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
@@ -497,7 +542,7 @@ app.get('/contratos/:token', async (req, res) => {
 
 
 // Iniciamos el servidor en el puerto 3000
-const port = process.env.PORT || 3000
+const port = process.env.PORT 
 console.log("👀 Llegando al punto de arrancar el servidor...");
 
 app.listen(port, () => {
