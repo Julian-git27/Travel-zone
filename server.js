@@ -127,40 +127,35 @@ app.get('/conductores', async (req, res) => {
     res.status(500).send('Error al obtener los conductores');
   }
 });
-router.post('/login/empleado', async (req, res) => {
+app.post('/login/empleado', async (req, res) => {
   try {
     const { cedula, placa } = req.body;
     
-    // 1. Validar datos
-    if (!cedula || !placa) {
-      return res.status(400).json({ success: false, message: 'Cédula y placa son requeridos' });
-    }
-    
-    // 2. Buscar empleado en la base de datos
-    const empleado = await Empleado.findOne({ 
-      where: { 
-        cedula: cedula,
-        placa: placa 
-      },
+    const conductor = await Conductor.findOne({
+      where: { cedula, placa },
       attributes: ['id', 'nombre', 'cedula', 'marca', 'modelo', 'color', 'placa']
     });
-    
-    if (!empleado) {
-      return res.status(404).json({ success: false, message: 'Empleado no encontrado' });
+
+    if (!conductor) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Conductor no encontrado' 
+      });
     }
-    
-    // 3. Responder con éxito
-    res.json({ 
+
+    res.json({
       success: true,
-      user: empleado 
+      user: {
+        ...conductor.dataValues,
+        tipo: 'empleado' // Mantienes la misma estructura que espera el frontend
+      }
     });
-    
+
   } catch (error) {
-    console.error('Error en login empleado:', error);
+    console.error('Error en login conductor:', error);
     res.status(500).json({ 
-      success: false,
-      message: 'Error interno del servidor',
-      error: process.env.NODE_ENV === 'development' ? error.message : null
+      success: false, 
+      message: 'Error en el servidor' 
     });
   }
 });
@@ -398,7 +393,32 @@ app.post('/contratos', async (req, res) => {
       errors
     });
   }
-
+  const Conductor = sequelize.define('Conductor', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    nombre: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    cedula: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      unique: true
+    },
+    placa: {
+      type: DataTypes.STRING(20),
+      allowNull: false
+    },
+    marca: DataTypes.STRING,
+    modelo: DataTypes.STRING,
+    color: DataTypes.STRING
+  }, {
+    tableName: 'conductores', // Esto es clave para usar la tabla existente
+    timestamps: false // Si tu tabla no tiene campos created_at/updated_at
+  });
   try {
     const token = uuidv4();
     
