@@ -127,6 +127,43 @@ app.get('/conductores', async (req, res) => {
     res.status(500).send('Error al obtener los conductores');
   }
 });
+router.post('/login/empleado', async (req, res) => {
+  try {
+    const { cedula, placa } = req.body;
+    
+    // 1. Validar datos
+    if (!cedula || !placa) {
+      return res.status(400).json({ success: false, message: 'Cédula y placa son requeridos' });
+    }
+    
+    // 2. Buscar empleado en la base de datos
+    const empleado = await Empleado.findOne({ 
+      where: { 
+        cedula: cedula,
+        placa: placa 
+      },
+      attributes: ['id', 'nombre', 'cedula', 'marca', 'modelo', 'color', 'placa']
+    });
+    
+    if (!empleado) {
+      return res.status(404).json({ success: false, message: 'Empleado no encontrado' });
+    }
+    
+    // 3. Responder con éxito
+    res.json({ 
+      success: true,
+      user: empleado 
+    });
+    
+  } catch (error) {
+    console.error('Error en login empleado:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error interno del servidor',
+      error: process.env.NODE_ENV === 'development' ? error.message : null
+    });
+  }
+});
 
 app.get('/conductores/:id', async (req, res) => {
   try {
