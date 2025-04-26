@@ -89,15 +89,18 @@ document.addEventListener('DOMContentLoaded', function() {
       ? 'http://localhost:3000'
       : 'https://travel-zone.onrender.com';
     
-    
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      console.log('URL completa:', `${BASE_URL}${endpoint}`); // Añade esto antes del fetch
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal // Añade esto para el timeout
+      });
       
-    });
-    
-    
+      if (response.status === 500) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Error interno del servidor. Por favor intenta más tarde.');
+      }
 
       clearTimeout(timeoutId);
 
@@ -151,23 +154,29 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
     } catch (error) {
-      console.error('Error en el login:', error);
+      console.error('Detalles del error:', {
+        errorName: error.name,
+        errorMessage: error.message,
+        errorStack: error.stack,
+        endpoint,
+        body
+      });
       
-      // Mensajes de error específicos
-      let errorMsg = 'Error al conectar con el servidor';
+      let errorMsg = 'Error durante el login';
       if (error.name === 'AbortError') {
-        errorMsg = 'El servidor no respondió a tiempo';
+        errorMsg = 'El servidor no respondió a tiempo (timeout)';
       } else if (error.message.includes('Failed to fetch')) {
-        errorMsg = 'No se pudo conectar al servidor. Verifica:';
-        errorMsg += '\n1. Que el servidor esté corriendo';
-        errorMsg += '\n2. Que la URL sea correcta';
-        errorMsg += '\n3. Que no haya problemas de red';
+        errorMsg = 'Error de conexión: ';
+        errorMsg += '1. Verifica tu conexión a internet\n';
+        errorMsg += '2. El servidor podría estar caído';
+      } else if (error.message.includes('internal')) {
+        errorMsg = 'Error del servidor: ' + error.message;
       } else {
         errorMsg = error.message;
       }
       
       showError(errorMsg);
-    } finally {
+    }finally {
       // Restaurar botón
       submitBtn.disabled = false;
       submitBtn.textContent = 'Iniciar sesión';
