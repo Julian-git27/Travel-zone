@@ -22,6 +22,7 @@ async function cargarConductores() {
 // Manejar la actualización o eliminación de conductor
 document.getElementById("btnActualizarConductor").addEventListener("click", async () => {
   const id = document.getElementById("conductorSelect").value;
+  
   const data = {
     nombre: document.getElementById("nombreConductor").value,
     cedula: document.getElementById("cedulaConductor").value,
@@ -166,6 +167,13 @@ document.getElementById("btnAgregarConductor").addEventListener("click", async (
   }
 });
 
+const placaInput = document.getElementById("placaVehiculoConductor");
+
+if (placaInput) {
+  placaInput.addEventListener("input", function () {
+    this.value = this.value.toUpperCase();
+  });
+}
 // Cargar conductores al cargar la página
 window.onload = cargarConductores;
 
