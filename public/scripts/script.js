@@ -196,25 +196,28 @@ document.getElementById("formularioContrato").addEventListener("submit", async f
     const cantidad = parseInt(document.getElementById("cantidad").value);
     
     const fechaInput = document.getElementById("fechaFirma").value;
+const fechaFinal = convertirFechaParaBackend(fechaInput);
 
-// Solución 100% efectiva para Colombia (UTC-5)
-const fechaFinal = formatDateLocal(fechaInput);
-
-// Función mejorada que evita problemas de zona horaria
-function formatDateLocal(dateString) {
-  // Dividir la fecha en componentes
-  const [year, month, day] = dateString.split('-');
+function convertirFechaParaBackend(fechaStr) {
+  // 1. Dividir la fecha en componentes
+  const partes = fechaStr.split('-');
+  const año = parseInt(partes[0]);
+  const mes = parseInt(partes[1]) - 1; // Meses son 0-indexados
+  const dia = parseInt(partes[2]);
   
-  // Crear nueva fecha en hora local (Colombia)
-  // Usamos el mediodía para evitar problemas con horario de verano
-  const localDate = new Date(year, month - 1, day, 12, 0, 0);
+  // 2. Crear fecha en hora local (Colombia UTC-5)
+  const fechaLocal = new Date(año, mes, dia);
   
-  // Obtener componentes en hora local
-  const localYear = localDate.getFullYear();
-  const localMonth = String(localDate.getMonth() + 1).padStart(2, '0');
-  const localDay = String(localDate.getDate()).padStart(2, '0');
+  // 3. Ajustar por zona horaria manualmente
+  const offset = fechaLocal.getTimezoneOffset() / 60; // Horas de diferencia
+  fechaLocal.setHours(fechaLocal.getHours() + offset);
   
-  return `${localYear}-${localMonth}-${localDay}`;
+  // 4. Formatear sin usar toISOString() que afecta la zona horaria
+  const añoFinal = fechaLocal.getFullYear();
+  const mesFinal = String(fechaLocal.getMonth() + 1).padStart(2, '0');
+  const diaFinal = String(fechaLocal.getDate()).padStart(2, '0');
+  
+  return `${añoFinal}-${mesFinal}-${diaFinal}`;
 }
     const contratoData = {
       nombre_cliente: document.getElementById("nombreCliente").value.trim(),
