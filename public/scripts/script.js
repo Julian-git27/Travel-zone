@@ -195,13 +195,18 @@ document.getElementById("formularioContrato").addEventListener("submit", async f
     const tipoContrato = document.getElementById("tipoContrato").value;
     const cantidad = parseInt(document.getElementById("cantidad").value);
     
+    let fechaInput = document.getElementById("fechaFirma").value;
+    let fechaObj = new Date(fechaInput);
+    fechaObj.setHours(12); // Ajuste para evitar problemas por zona horaria
+    const fechaFinal = fechaObj.toISOString().split('T')[0];
+    
     const contratoData = {
       nombre_cliente: document.getElementById("nombreCliente").value.trim(),
       cedula_cliente: document.getElementById("cedulaCliente").value.trim(),
       tipo_contrato: tipoContrato,
       cantidad: cantidad,
       ciudad: document.getElementById("ciudadFirma").value.trim(),
-      fecha_firma: document.getElementById("fechaFirma").value,
+      fecha_firma: fechaFinal, // Aquí envías la fecha corregida
       conductor_id: conductorId
     };
 

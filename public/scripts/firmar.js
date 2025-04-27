@@ -258,7 +258,7 @@ async function generarPDF() {
       // Contenido del contrato
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
-      y = addCompactText(doc, "Entre los suscritos, EDWIN ADRIAN ALZATE RAMIREZ, identificada con NIT. 3.481.992, persona natural legalmente constituida, ubicada en la Calle 77e # 71- 126 de la Ciudad de Medellín, la cual cuenta con con RNT No. 166158 para la modalidad de ARRENDADORES DE VEHÍCULOS PARA TURISMO NACIONAL E INTERNACIONAL y RNT No. 166137 para la modalidad de AGENCIAS DE VIAJES", y, maxWidth, margin);
+      y = addCompactText(doc, "Entre los suscritos, EDWIN ADRIAN ALZATE RAMIREZ, identificada con NIT. 3.481.992, persona natural legalmente constituida, ubicada en la Calle 40 # 81A - 168 de la Ciudad de Medellín, la cual cuenta con con RNT No. 166158 para la modalidad de ARRENDADORES DE VEHÍCULOS PARA TURISMO NACIONAL E INTERNACIONAL y RNT No. 166137 para la modalidad de AGENCIAS DE VIAJES", y, maxWidth, margin);
       y = addCompactText(doc, "Representada legalmente por EDWIN ADRIAN ALZATE RAMIREZ, mayor de edad, identificado con cédula de ciudadanía No.3.481.992 de Envigado, quien en adelante se llama EL ARRENDADOR y EL ARRENDATARIO identificado como aparece al pie de la firma, hemos convenido en celebrar el presente contrato de ARRENDAMIENTO de vehículo automotor, que se regirá por las siguientes cláusulas:", y, maxWidth, margin);
       y += 4;
 
@@ -339,7 +339,7 @@ async function generarPDF() {
       
       doc.text("___________________", margin + 100, y + 25);
       doc.text("ARRENDATARIO", margin + 100, y + 29);
-      doc.text(contrato.cedula_cliente.substring(0, 20), margin + 100, y + 35);
+      doc.text(contrato.cedula_cliente.substring(0, 20), margin + 100, y + 37);
       doc.text(contrato.nombre_cliente.substring(0, 20), margin + 100, y + 33);
 
       // Firma digital
