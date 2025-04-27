@@ -339,6 +339,7 @@ async function generarPDF() {
       
       doc.text("___________________", margin + 100, y + 25);
       doc.text("ARRENDATARIO", margin + 100, y + 29);
+      doc.text(contrato.cedula_cliente.substring(0, 20), margin + 100, y + 35);
       doc.text(contrato.nombre_cliente.substring(0, 20), margin + 100, y + 33);
 
       // Firma digital

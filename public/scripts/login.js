@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const loginForm = document.getElementById('loginForm');
   const errorMessage = document.getElementById('error-message');
   const submitBtn = document.querySelector('#loginForm button[type="submit"]');
+  const placaInput = document.getElementById('placa'); // 👈 Agregado
+
+  // 1.1. Convertir automáticamente la placa a mayúsculas
+  placaInput.addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+  });
 
   // 2. Función para mostrar/ocultar campos según tipo de usuario
   function updateFieldsVisibility() {
