@@ -38,6 +38,8 @@ app.get('/test-css', (req, res) => {
   res.sendFile(path.join(__dirname, 'styles', 'login.css'));
 });
 
+await pool.query("SET TIMEZONE = 'America/Bogota'");
+console.log('Zona horaria configurada a America/Bogota');
 
 // Middleware para archivos estáticos (¡IMPORTANTE!)
 app.use(express.static(path.join(__dirname))); // Esto sirve todo el directorio raíz
