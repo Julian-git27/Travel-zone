@@ -199,14 +199,11 @@ document.getElementById("formularioContrato").addEventListener("submit", async f
     const fechaFinal = convertirFechaParaBackend(fechaInput);
     
     function convertirFechaParaBackend(fechaStr) {
-      // 1. Dividir la fecha en componentes (asumiendo formato YYYY-MM-DD)
-      const partes = fechaStr.split('-');
-      const año = partes[0];
-      const mes = partes[1];
-      const dia = partes[2];
-      
-      // 2. Devolver la fecha en el mismo formato (sin conversión de zona horaria)
-      return `${año}-${mes}-${dia}`;
+      // Solo verifica que tenga el formato correcto
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaStr)) {
+        throw new Error("Formato de fecha inválido. Use YYYY-MM-DD");
+      }
+      return fechaStr; // Devuelve la fecha tal cual
     }
     const contratoData = {
       nombre_cliente: document.getElementById("nombreCliente").value.trim(),

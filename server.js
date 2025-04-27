@@ -374,6 +374,11 @@ app.post('/contratos', async (req, res) => {
   if (!fecha_firma) errors.push('fecha_firma es requerida');
   if (!conductor_id) errors.push('conductor_id es requerido');
 
+  // Validación específica para la fecha
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha_firma)) {
+    errors.push('Formato de fecha inválido. Debe ser YYYY-MM-DD');
+  }
+
   if (errors.length > 0) {
     return res.status(400).json({
       success: false,
@@ -384,6 +389,7 @@ app.post('/contratos', async (req, res) => {
   try {
     const token = uuidv4();
     
+    // Asegurarse que la fecha se guarde exactamente como viene del frontend
     const result = await pool.query(
       `INSERT INTO contratos (
         nombre_cliente,
@@ -394,7 +400,7 @@ app.post('/contratos', async (req, res) => {
         fecha_firma,
         conductor_id,
         token
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      ) VALUES ($1, $2, $3, $4, $5, $6::date, $7, $8)
       RETURNING *`,
       [
         nombre_cliente,
@@ -402,7 +408,7 @@ app.post('/contratos', async (req, res) => {
         tipo_contrato,
         cantidad,
         ciudad,
-        fecha_firma,
+        fecha_firma, // Se envía directamente sin conversión
         conductor_id,
         token
       ]
@@ -423,7 +429,6 @@ app.post('/contratos', async (req, res) => {
     });
   }
 });
-
 // Ruta login empleado (MODIFICADA)
 app.get('/contratos/:token', async (req, res) => {
   const { token } = req.params;
