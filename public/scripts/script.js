@@ -195,18 +195,25 @@ document.getElementById("formularioContrato").addEventListener("submit", async f
     const tipoContrato = document.getElementById("tipoContrato").value;
     const cantidad = parseInt(document.getElementById("cantidad").value);
     
-    let fechaInput = document.getElementById("fechaFirma").value;
+    const fechaInput = document.getElementById("fechaFirma").value;
 
-// Crear la fecha en hora colombiana (UTC-5)
-let [anio, mes, dia] = fechaInput.split('-');
-let fechaObj = new Date(anio, mes - 1, dia, 12, 0, 0); // Mediodía en hora local
+// Dividir la fecha en componentes
+const [anio, mes, dia] = fechaInput.split('-');
 
-// Formatear a YYYY-MM-DD sin problemas de zona horaria
-const fechaFinal = [
-    fechaObj.getFullYear(),
-    String(fechaObj.getMonth() + 1).padStart(2, '0'),
-    String(fechaObj.getDate()).padStart(2, '0')
-].join('-');
+// Crear la fecha en hora local (Colombia)
+const fechaColombiana = new Date(anio, mes - 1, dia);
+
+// Formatear correctamente para la base de datos
+const fechaFinal = formatDateToYYYYMMDD(fechaColombiana);
+
+// Función auxiliar para formatear
+function formatDateToYYYYMMDD(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
     const contratoData = {
       nombre_cliente: document.getElementById("nombreCliente").value.trim(),
       cedula_cliente: document.getElementById("cedulaCliente").value.trim(),
