@@ -195,27 +195,27 @@ document.getElementById("formularioContrato").addEventListener("submit", async f
     const tipoContrato = document.getElementById("tipoContrato").value;
     const cantidad = parseInt(document.getElementById("cantidad").value);
     
- 
-
-    const conductorId = document.getElementById("conductorSelect").value; // Asegúrate de tener esta línea
-
-    function obtenerFechaCorrecta() {
-      const fechaInput = document.getElementById("fechaFirma").value;
-      
-      // Validación básica
-      if (!fechaInput) throw new Error("Fecha no seleccionada");
-      
-      return fechaInput; // Envía directamente el valor del input
-    }
+    const fechaInput = document.getElementById("fechaFirma").value;
+    const fechaFinal = convertirFechaParaBackend(fechaInput);
     
+    function convertirFechaParaBackend(fechaStr) {
+      // 1. Dividir la fecha en componentes (asumiendo formato YYYY-MM-DD)
+      const partes = fechaStr.split('-');
+      const año = partes[0];
+      const mes = partes[1];
+      const dia = partes[2];
+      
+      // 2. Devolver la fecha en el mismo formato (sin conversión de zona horaria)
+      return `${año}-${mes}-${dia}`;
+    }
     const contratoData = {
       nombre_cliente: document.getElementById("nombreCliente").value.trim(),
       cedula_cliente: document.getElementById("cedulaCliente").value.trim(),
       tipo_contrato: tipoContrato,
       cantidad: cantidad,
       ciudad: document.getElementById("ciudadFirma").value.trim(),
-      fecha_firma: obtenerFechaCorrecta(), // Aquí envías la fecha
-      conductor_id: conductorId // Asegúrate de definir conductorId antes
+      fecha_firma: fechaFinal, // Aquí envías la fecha corregida
+      conductor_id: conductorId
     };
 
     // Validaciones
