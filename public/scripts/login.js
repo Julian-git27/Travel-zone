@@ -17,17 +17,16 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateFieldsVisibility() {
     const isEmpleado = userTypeSelect.value === 'empleado';
     
-    // Mostrar u ocultar campos
     jefeFields.classList.toggle('hidden', isEmpleado);
     empleadoFields.classList.toggle('hidden', !isEmpleado);
     
-    // Actualizar campos requeridos
+    // Aquí dentro debes actualizar los campos requeridos
     document.getElementById('email').required = !isEmpleado;
     document.getElementById('password').required = !isEmpleado;
     document.getElementById('cedula').required = isEmpleado;
     document.getElementById('placa').required = isEmpleado;
     
-    // Limpiar mensajes de error
+    // También puedes limpiar errores si quieres
     errorMessage.classList.add('hidden');
   }
 
