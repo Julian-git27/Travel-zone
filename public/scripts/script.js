@@ -195,10 +195,18 @@ document.getElementById("formularioContrato").addEventListener("submit", async f
     const tipoContrato = document.getElementById("tipoContrato").value;
     const cantidad = parseInt(document.getElementById("cantidad").value);
     
-    let fechaInput = document.getElementById("fechaFirma").value; // Asegúrate que el input tiene type="date"
-let fechaObj = new Date(fechaInput + 'T12:00:00'); // Agregar hora explícitamente
-const fechaFinal = fechaObj.toISOString().split('T')[0];
-    
+    let fechaInput = document.getElementById("fechaFirma").value;
+
+// Crear la fecha en hora colombiana (UTC-5)
+let [anio, mes, dia] = fechaInput.split('-');
+let fechaObj = new Date(anio, mes - 1, dia, 12, 0, 0); // Mediodía en hora local
+
+// Formatear a YYYY-MM-DD sin problemas de zona horaria
+const fechaFinal = [
+    fechaObj.getFullYear(),
+    String(fechaObj.getMonth() + 1).padStart(2, '0'),
+    String(fechaObj.getDate()).padStart(2, '0')
+].join('-');
     const contratoData = {
       nombre_cliente: document.getElementById("nombreCliente").value.trim(),
       cedula_cliente: document.getElementById("cedulaCliente").value.trim(),
