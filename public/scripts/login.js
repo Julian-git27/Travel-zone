@@ -86,33 +86,34 @@ document.addEventListener('DOMContentLoaded', function() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       const BASE_URL = 'https://travel-zone.onrender.com';
+      
       const response = await fetch(`${BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cedula, placa })
+        body: JSON.stringify(body) // ✅ AQUÍ usamos la variable body correcta
       });
       
       if (response.status === 500) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || 'Error interno del servidor. Por favor intenta más tarde.');
       }
-
+      
       clearTimeout(timeoutId);
-
+      
       // Verificar que la respuesta sea JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         const text = await response.text();
         throw new Error(`El servidor respondió con HTML en lugar de JSON: ${text.substring(0, 100)}...`);
       }
-
+      
       const data = await response.json();
       
       // Verificar si hubo error en el servidor
       if (!response.ok) {
         throw new Error(data.message || `Error ${response.status}`);
       }
-
+      
       if (!data.success) {
         throw new Error(data.message || 'Credenciales incorrectas');
       }
