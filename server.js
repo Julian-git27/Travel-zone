@@ -17,8 +17,9 @@ requiredEnvVars.forEach(varName => {
     process.exit(1);
   }
 });
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://travel-zone.onrender.com'],
+  origin: ['http://localhost:3000', process.env.FRONT_URL],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -31,34 +32,11 @@ app.use((req, res, next) => {
   next();
 });
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Origen no permitido por CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200 // Para navegadores antiguos
-};
-
-app.use(cors(corsOptions));
 console.log('✅ Variables de entorno cargadas correctamente');
 
 app.get('/test-css', (req, res) => {
   res.sendFile(path.join(__dirname, 'styles', 'login.css'));
 });
-// Configuración CORS
-
-
-app.use(cors({
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
-
 
 
 // Middleware para archivos estáticos (¡IMPORTANTE!)
@@ -119,7 +97,6 @@ const pool = new Pool({
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 // Ruta para obtener todos los conductores

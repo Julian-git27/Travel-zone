@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Hacer petición al servidor con timeout de 10s
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-      const BASE_URL = 'https://travel-zone.onrender.com';
+      const BASE_URL = 'http://localhost:3000';
       
       const response = await fetch(`${BASE_URL}${endpoint}`, {
         method: 'POST',
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Guardando datos del empleado:', empleadoData);
         localStorage.setItem('empleado', JSON.stringify(empleadoData));
         
-        window.location.href = '../empleado';
+        window.location.href = '../empleados';
       } else {
         localStorage.setItem('user', JSON.stringify({
           ...data.user,
