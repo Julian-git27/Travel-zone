@@ -195,10 +195,9 @@ document.getElementById("formularioContrato").addEventListener("submit", async f
     const tipoContrato = document.getElementById("tipoContrato").value;
     const cantidad = parseInt(document.getElementById("cantidad").value);
     
-    let fechaInput = document.getElementById("fechaFirma").value;
-    let fechaObj = new Date(fechaInput);
-    fechaObj.setHours(12); // Ajuste para evitar problemas por zona horaria
-    const fechaFinal = fechaObj.toISOString().split('T')[0];
+    let fechaInput = document.getElementById("fechaFirma").value; // Asegúrate que el input tiene type="date"
+let fechaObj = new Date(fechaInput + 'T12:00:00'); // Agregar hora explícitamente
+const fechaFinal = fechaObj.toISOString().split('T')[0];
     
     const contratoData = {
       nombre_cliente: document.getElementById("nombreCliente").value.trim(),
