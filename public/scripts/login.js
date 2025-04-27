@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       const BASE_URL = 'https://travel-zone.onrender.com';
-      const response = await fetch(`${BASE_URL}/login/conductores`, {
+      const response = await fetch(`${BASE_URL}/login/empleados`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cedula, placa })
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Guardando datos del empleado:', empleadoData);
         localStorage.setItem('empleado', JSON.stringify(empleadoData));
         
-        window.location.href = '../conductores';
+        window.location.href = '../empleados';
       } else {
         localStorage.setItem('user', JSON.stringify({
           ...data.user,

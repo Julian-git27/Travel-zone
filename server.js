@@ -112,9 +112,14 @@ app.get('/confirmacion', (req, res) => {
 });
 
 // Configuración de la conexión a PostgreSQL
+// Configuración de la conexión a PostgreSQL usando variables individuales
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Usa la URL de la base de datos si está disponible, sino usa la conexión local
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false, // Habilita SSL solo en producción
+  user: process.env.DB_USERNAME,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 // Ruta para obtener todos los conductores
