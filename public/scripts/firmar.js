@@ -336,6 +336,7 @@ async function generarPDF() {
       doc.text("___________________", margin, y + 25);
       doc.text("ARRENDADOR", margin, y + 29);
       doc.text("E.A. Alzate Ramirez", margin, y + 33);
+      doc.text("3481992", margin, y + 36);
       
       doc.text("___________________", margin + 100, y + 25);
       doc.text("ARRENDATARIO", margin + 100, y + 29);

@@ -122,22 +122,24 @@
     const cantidad = parseInt(document.getElementById("cantidad").value);
     const fechaInput = document.getElementById("fechaFirma").value;
 
-// Dividir la fecha en componentes
-const [anio, mes, dia] = fechaInput.split('-');
+// Solución 100% efectiva para Colombia (UTC-5)
+const fechaFinal = formatDateLocal(fechaInput);
 
-// Crear la fecha en hora local (Colombia)
-const fechaColombiana = new Date(anio, mes - 1, dia);
-
-// Formatear correctamente para la base de datos
-const fechaFinal = formatDateToYYYYMMDD(fechaColombiana);
-
-// Función auxiliar para formatear
-function formatDateToYYYYMMDD(date) {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+// Función mejorada que evita problemas de zona horaria
+function formatDateLocal(dateString) {
+  // Dividir la fecha en componentes
+  const [year, month, day] = dateString.split('-');
+  
+  // Crear nueva fecha en hora local (Colombia)
+  // Usamos el mediodía para evitar problemas con horario de verano
+  const localDate = new Date(year, month - 1, day, 12, 0, 0);
+  
+  // Obtener componentes en hora local
+  const localYear = localDate.getFullYear();
+  const localMonth = String(localDate.getMonth() + 1).padStart(2, '0');
+  const localDay = String(localDate.getDate()).padStart(2, '0');
+  
+  return `${localYear}-${localMonth}-${localDay}`;
 }
 const contratoData = {
   nombre_cliente: document.getElementById("nombreCliente").value.trim(),
