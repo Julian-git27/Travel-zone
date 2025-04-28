@@ -25,12 +25,12 @@ if (!token) {
 
 }
 function formatearFechaLocal(fechaStr) {
-  const partes = fechaStr.split("-");
-  if (partes.length !== 3) return "Fecha inválida";
+  if (!fechaStr) return "Fecha inválida";
   
-  const año = partes[0];
-  const mes = partes[1];
-  const dia = partes[2];
+  const fecha = new Date(fechaStr); // Ahora sí usando Date solo para ISO
+  const dia = String(fecha.getUTCDate()).padStart(2, '0');
+  const mes = String(fecha.getUTCMonth() + 1).padStart(2, '0'); // Mes comienza en 0
+  const año = fecha.getUTCFullYear();
 
   return `${dia}/${mes}/${año}`;
 }
