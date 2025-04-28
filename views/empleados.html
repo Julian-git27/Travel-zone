@@ -212,7 +212,7 @@ function mostrarResultadoExitoso(data, contratoData) {
       <strong>Cliente:</strong> ${contratoData.nombre_cliente}<br>
       <strong>Cédula:</strong> ${contratoData.cedula_cliente}<br>
       <strong>Duración:</strong> ${contratoData.cantidad} ${contratoData.tipo_contrato}<br>
-      <strong>Fecha:</strong> ${new Date(contratoData.fecha_firma).toLocaleDateString()}
+     <strong>Fecha:</strong> ${contratoData.fecha_firma.split('-').reverse().join('/')}
     </div>
   `;
 
