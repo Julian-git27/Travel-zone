@@ -136,10 +136,9 @@ const contratoData = {
   tipo_contrato: tipoContrato,
   cantidad: cantidad,
   ciudad: document.getElementById("ciudadFirma").value.trim(),
-  fecha_firma: fechaFinal, // Aquí envías la fecha corregida
-  conductor_id: conductorId
+  fecha_firma: fechaFinal,
+  conductor_id: empleado.id // ✅ Aquí usamos el id correcto del conductor
 };
-
     // Validaciones
     const errores = [];
     if (!contratoData.nombre_cliente) errores.push("Nombre del cliente");
