@@ -22,6 +22,17 @@ if (!token) {
   alert("No se encontró el token del contrato en la URL");
   window.location.href = "/";
   throw new Error("Token no encontrado"); // Detener ejecución
+
+}
+function formatearFechaLocal(fechaStr) {
+  const partes = fechaStr.split("-");
+  if (partes.length !== 3) return "Fecha inválida";
+  
+  const año = partes[0];
+  const mes = partes[1];
+  const dia = partes[2];
+
+  return `${dia}/${mes}/${año}`;
 }
 async function cargarImagenes() {
   try {
@@ -136,7 +147,8 @@ function mostrarDatosContrato(contrato) {
   document.getElementById("nombreCliente").textContent = contrato.nombre_cliente;
   document.getElementById("cedulaCliente").textContent = contrato.cedula_cliente;
   document.getElementById("ciudadFirma").textContent = contrato.ciudad;
-  document.getElementById("fechaFirma").textContent = contrato.fecha_firma ? new Date(contrato.fecha_firma).toLocaleDateString() : 'No especificada';
+
+  document.getElementById("fechaFirma").textContent = contrato.fecha_firma ? formatearFechaLocal(contrato.fecha_firma) : 'No especificada';
   document.getElementById("nombreConductor").textContent = contrato.nombre_conductor;
   document.getElementById("placaVehiculo").textContent = contrato.placa;
   document.getElementById("marcaModelo").textContent = `${contrato.marca} / ${contrato.modelo}`;
