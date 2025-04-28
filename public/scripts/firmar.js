@@ -238,10 +238,29 @@ async function generarPDF() {
       
       addWatermark();
 
-      const fechaFirma = contrato.fecha_firma ? new Date(contrato.fecha_firma) : new Date();
-      const dia = fechaFirma.getDate();
-      const mes = fechaFirma.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-      const anio = fechaFirma.getFullYear();
+      let dia = '';
+let mes = '';
+let anio = '';
+
+if (contrato.fecha_firma) {
+  const partesFecha = contrato.fecha_firma.split('-'); // [año, mes, día]
+  anio = partesFecha[0];
+  const numeroMes = parseInt(partesFecha[1], 10);
+  const diaMes = parseInt(partesFecha[2], 10);
+
+  dia = diaMes;
+  
+  const nombresMeses = [
+    '', 'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
+    'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
+  ];
+  mes = nombresMeses[numeroMes];
+} else {
+  const fechaHoy = new Date();
+  dia = fechaHoy.getDate();
+  mes = fechaHoy.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+  anio = fechaHoy.getFullYear();
+}
 
       // Título con número de contrato
       doc.setFont("helvetica", "bold");
