@@ -366,13 +366,13 @@ if (contrato.fecha_firma) {
       doc.setFontSize(9);
       doc.text("___________________", margin, y + 25);
       doc.text("ARRENDADOR", margin, y + 29);
-      doc.text("E.A. Alzate Ramirez", margin, y + 33);
+      doc.text("Edwin Adrian Alzate Ramirez", margin, y + 33);
       doc.text("C.C 3481992", margin, y + 36);
       
       doc.text("___________________", margin + 100, y + 25);
       doc.text("ARRENDATARIO", margin + 100, y + 29);
       doc.text(contrato.cedula_cliente.substring(0, 20), margin + 100, y + 37);
-      doc.text(contrato.nombre_cliente.substring(0, 20), margin + 100, y + 33);
+      doc.text(contrato.nombre_cliente.substring(0, 60), margin + 100, y + 33);
 
       // Firma digital
       const firmaX = margin + 100;
