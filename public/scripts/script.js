@@ -261,15 +261,21 @@ function mostrarResultadoExitoso(data, contratoData) {
   const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
   const firmaUrl = `${baseUrl}/firmar.html?token=${encodeURIComponent(data.token)}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(firmaUrl)}`;
-  
-  // Crear sección de resultados si no existe
+
+  const ahora = new Date();
+  const horaGeneracion = ahora.toLocaleTimeString('es-CO', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+
   let resultadoDiv = document.getElementById('resultado-contrato');
   if (!resultadoDiv) {
     resultadoDiv = document.createElement('div');
     resultadoDiv.id = 'resultado-contrato';
     document.querySelector('.container').appendChild(resultadoDiv);
   }
-  
+
   resultadoDiv.className = 'card mt-4 p-3';
   resultadoDiv.innerHTML = `
     <h5 class="text-success">¡Contrato creado exitosamente!</h5>
@@ -290,11 +296,11 @@ function mostrarResultadoExitoso(data, contratoData) {
       <strong>Cliente:</strong> ${contratoData.nombre_cliente}<br>
       <strong>Cédula:</strong> ${contratoData.cedula_cliente}<br>
       <strong>Duración:</strong> ${contratoData.cantidad} ${contratoData.tipo_contrato}<br>
-      <strong>Fecha:</strong> ${contratoData.fecha_firma.split('-').reverse().join('/')}
+      <strong>Fecha:</strong> ${contratoData.fecha_firma.split('-').reverse().join('/')}<br>
+      <strong>Hora:</strong> ${horaGeneracion}
     </div>
   `;
 
-  // Limpiar formulario
   document.getElementById("formularioContrato").reset();
 }
 

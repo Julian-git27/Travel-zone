@@ -254,6 +254,11 @@ async function generarPDF() {
 let mes = '';
 let anio = '';
 
+const horaGeneracion = new Date().toLocaleTimeString('es-CO', {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+});
 if (contrato.fecha_firma) {
   const partesFecha = contrato.fecha_firma.split('-'); // [año, mes, día]
   anio = partesFecha[0];
@@ -358,7 +363,7 @@ if (contrato.fecha_firma) {
       // Firmas
       y += 25;
       doc.setFontSize(8);
-      doc.text(`Se firma en ${contrato.ciudad} a los ${dia} días de ${mes} de ${anio}.`, pageWidth / 2, y, { align: "center" });
+      doc.text(`Se firma en ${contrato.ciudad} a los ${dia} días de ${mes} de ${anio}, a las ${horaGeneracion}.`, pageWidth / 2, y, { align: "center" });;
       
       // Número de contrato en esquina inferior derecha
       doc.text(`Contrato No. ${contrato.id || 'N/A'}`, pageWidth - margin, y + 40, { align: "right" });
